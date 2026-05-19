@@ -97,8 +97,10 @@ void app_main(void)
     mouse_engine_init();
     cmd_dispatcher_init();
 
-    /* 5-6. Wi-Fi + HTTP. */
-    wifi_manager_start_softap();
+    /* 5-6. Wi-Fi + HTTP.  wifi_manager_start() picks STA or Soft-AP based
+     * on MOUSEUM_STA_SSID in board_config.h.  In STA mode it blocks until
+     * we have an IP (or times out) before HTTP starts. */
+    wifi_manager_start();
     start_http_server();
 
     /* 7. HID device stack (TinyUSB on S3, NimBLE HID on C6). */

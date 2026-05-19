@@ -23,7 +23,28 @@
 #define MOUSEUM_BLE_NAME     "mouseum"
 #endif
 
-/* ----- Wi-Fi (Soft-AP defaults) ----- */
+/* ----- Wi-Fi mode selection -----
+ *
+ * If MOUSEUM_STA_SSID is non-empty, the firmware joins that existing
+ * network in station mode (the HTTP server is reachable via whatever IP
+ * the network's DHCP server hands out — printed at boot on the serial
+ * monitor).  Otherwise, it creates its own Soft-AP at 192.168.4.1.
+ *
+ * Set credentials here, then rebuild + reflash.
+ */
+#ifndef MOUSEUM_STA_SSID
+#define MOUSEUM_STA_SSID     ""        /* e.g. "MyHomeWiFi" */
+#endif
+#ifndef MOUSEUM_STA_PASS
+#define MOUSEUM_STA_PASS     ""        /* e.g. "supersecret" */
+#endif
+
+/* How long to wait for an IP after joining (ms) before giving up. */
+#ifndef MOUSEUM_STA_TIMEOUT_MS
+#define MOUSEUM_STA_TIMEOUT_MS  20000
+#endif
+
+/* ----- Wi-Fi (Soft-AP defaults, used when MOUSEUM_STA_SSID is empty) ----- */
 #ifndef MOUSEUM_AP_SSID
 #define MOUSEUM_AP_SSID      "mouseum"
 #endif
