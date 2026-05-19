@@ -1,0 +1,11 @@
+## IDF Component Manager Manifest File
+##
+## TinyUSB is only needed on chips with native USB OTG (S3/S2).  C6/C3/H2
+## builds use the bundled `bt` component for BLE HID and skip esp_tinyusb.
+dependencies:
+  idf:
+    version: ">=5.1"
+  espressif/esp_tinyusb:
+    version: "~2.0.0"
+    rules:
+      - if: "target in [esp32s3, esp32s2]"

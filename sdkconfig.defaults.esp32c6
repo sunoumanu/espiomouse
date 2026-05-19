@@ -1,0 +1,32 @@
+#
+# ESP32-C6 overrides — NimBLE HID-over-GATT + Wi-Fi/BT coexistence.
+#
+# The C6 has no native USB OTG: it appears to the host as a Bluetooth LE
+# mouse instead.  Wi-Fi continues to host the HTTP REST control plane;
+# both share the single 2.4 GHz radio via the coexistence layer.
+#
+
+# ---- Bluetooth (NimBLE only — no Bluedroid on the C6) -----------------------
+CONFIG_BT_ENABLED=y
+CONFIG_BT_NIMBLE_ENABLED=y
+CONFIG_BT_NIMBLE_ROLE_PERIPHERAL=y
+CONFIG_BT_NIMBLE_ROLE_CENTRAL=n
+CONFIG_BT_NIMBLE_ROLE_BROADCASTER=y
+CONFIG_BT_NIMBLE_ROLE_OBSERVER=n
+
+# Bonding / SMP: JustWorks (no MITM, no I/O).  See ble_hid_task.c.
+CONFIG_BT_NIMBLE_SM_LEGACY=y
+CONFIG_BT_NIMBLE_SM_SC=y
+
+# Increase max ATT MTU so the HID Report Map characteristic fits in a single
+# read.  74-byte boot mouse descriptor + a little headroom.
+CONFIG_BT_NIMBLE_ATT_PREFERRED_MTU=128
+
+# Device name shown by hosts during scanning.  Matches MOUSEUM_BLE_NAME.
+CONFIG_BT_NIMBLE_SVC_GAP_DEVICE_NAME="mouseum"
+
+# ---- Wi-Fi / BT coexistence -------------------------------------------------
+CONFIG_ESP_COEX_SW_COEXIST_ENABLE=y
+
+# The C6 is single-core (RISC-V), so no SMP and no core-pinning.
+CONFIG_FREERTOS_UNICORE=y

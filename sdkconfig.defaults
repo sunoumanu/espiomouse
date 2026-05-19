@@ -1,0 +1,37 @@
+#
+# mouseum-esp32 shared defaults (apply to every target).
+#
+# Per-target overrides live in:
+#   sdkconfig.defaults.esp32s3   (TinyUSB HID)
+#   sdkconfig.defaults.esp32c6   (NimBLE HID + Wi-Fi/BT coexistence)
+#
+
+# ---- Partition table ---------------------------------------------------------
+# Tell ESP-IDF to use our custom partitions.csv (not the built-in 1 MB layout).
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+CONFIG_PARTITION_TABLE_FILENAME="partitions.csv"
+
+# Match the factory partition offset declared in partitions.csv.
+CONFIG_PARTITION_TABLE_OFFSET=0x8000
+
+# Flash size must be large enough to hold the partition table.  Every
+# supported dev kit (S3 DevKit-C-1, C6 DevKit-C-1) ships with 4 MB+.
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+
+# ---- FreeRTOS ----------------------------------------------------------------
+CONFIG_FREERTOS_HZ=1000
+
+# ---- HTTP server -------------------------------------------------------------
+CONFIG_HTTPD_MAX_REQ_HDR_LEN=512
+CONFIG_HTTPD_MAX_URI_LEN=512
+
+# ---- Wi-Fi -------------------------------------------------------------------
+CONFIG_ESP_WIFI_SOFTAP_SUPPORT=y
+
+# ---- Logging -----------------------------------------------------------------
+CONFIG_LOG_DEFAULT_LEVEL_INFO=y
+
+# ---- Misc --------------------------------------------------------------------
+# Larger main task stack so app_main can run all the *_init() helpers safely.
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=6144
